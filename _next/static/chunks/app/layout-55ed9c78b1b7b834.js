@@ -209,13 +209,13 @@
         N = s(7783);
       let j = "tel:+15551234567",
         y = [
-          { href: "/", label: "Home", icon: l.A },
-          { href: "/wildlife-removal", label: "Wildlife Removal", icon: c.A },
-          { href: "/pest-control", label: "Pest Control", icon: u.A },
-          { href: "/about", label: "About Us", icon: f.A },
-          { href: "/reviews", label: "Reviews", icon: m.A },
-          { href: "/faq", label: "FAQ", icon: p.A },
-          { href: "/contact", label: "Contact", icon: x.A },
+          { href: "/dist-20260121-142648/", label: "Home", icon: l.A },
+          { href: "/dist-20260121-142648/wildlife-removal/", label: "Wildlife Removal", icon: c.A },
+          { href: "/dist-20260121-142648/pest-control/", label: "Pest Control", icon: u.A },
+          { href: "/dist-20260121-142648/about/", label: "About Us", icon: f.A },
+          { href: "/dist-20260121-142648/reviews/", label: "Reviews", icon: m.A },
+          { href: "/dist-20260121-142648/faq/", label: "FAQ", icon: p.A },
+          { href: "/dist-20260121-142648/contact/", label: "Contact", icon: x.A },
         ];
       h.A,
         g.A,
@@ -369,7 +369,7 @@
             className: "container px-4 md:px-6 flex h-16 items-center",
             children: [
               (0, a.jsxs)(o(), {
-                href: "/",
+                href: "/dist-20260121-142648/",
                 className: "mr-6",
                 children: [
                   (0, a.jsx)(z, {}),
@@ -405,7 +405,7 @@
                   (0, a.jsx)(w.$, {
                     asChild: !0,
                     className: "hidden md:inline-flex",
-                    children: (0, a.jsx)(o(), { href: "/contact", children: "Book Inspection" }),
+                    children: (0, a.jsx)(o(), { href: "/dist-20260121-142648/contact/", children: "Book Inspection" }),
                   }),
                   (0, a.jsx)(w.$, {
                     asChild: !0,
@@ -526,7 +526,7 @@
                           (0, a.jsx)("div", {
                             className: "text-sm",
                             children: (0, a.jsx)(o(), {
-                              href: "/cookie-policy",
+                              href: "/dist-20260121-142648/cookie-policy/",
                               className: "text-primary underline underline-offset-4",
                               children: "Cookie Policy",
                             }),

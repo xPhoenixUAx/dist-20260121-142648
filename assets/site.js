@@ -424,12 +424,36 @@
                 ? "wood-destroying"
                 : tabLabel;
 
-          const cards = Array.from(allPanel.querySelectorAll(".rounded-lg.border.bg-card"));
+          const cards = Array.from(
+            allPanel.querySelectorAll(
+              '.rounded-lg.border.bg-card, .rounded-lg.border.text-card-foreground.shadow-sm, .rounded-lg.border',
+            ),
+          ).filter((el) => el.querySelector("p.font-bold") || el.querySelector("p.font-semibold"));
+
+          const categorySet = new Set(["insects", "rodents", "wood-destroying"]);
+          function getCategory(card) {
+            const badgeCandidates = Array.from(card.querySelectorAll("div,span")).filter((n) => {
+              const cls = (n.getAttribute("class") || "").toLowerCase();
+              return cls.includes("rounded-full") || cls.includes("inline-flex");
+            });
+            for (const el of badgeCandidates) {
+              const t = (el.textContent || "").trim().toLowerCase();
+              if (!t) continue;
+              const normalized =
+                t === "wood destroying" || t === "wood-destroying" ? "wood-destroying" : t;
+              if (categorySet.has(normalized)) return normalized;
+            }
+
+            const text = (card.textContent || "").toLowerCase();
+            if (text.includes("insects")) return "insects";
+            if (text.includes("rodents")) return "rodents";
+            if (text.includes("wood-destroying") || text.includes("wood destroying"))
+              return "wood-destroying";
+            return null;
+          }
+
           for (const card of cards) {
-            const badge = card.querySelector(".inline-flex.items-center.rounded-full");
-            const category = (badge?.textContent || "").trim().toLowerCase();
-            const normalized =
-              category === "wood-destroying" || category === "wood destroying" ? "wood-destroying" : category;
+            const normalized = getCategory(card);
             card.style.display = !filter || normalized === filter ? "" : "none";
           }
           return;

@@ -364,10 +364,175 @@
     setTopic("general");
   }
 
+  function initRadixTabs() {
+    const tablists = Array.from(document.querySelectorAll('[role="tablist"]'));
+    for (const tablist of tablists) {
+      const tabs = Array.from(tablist.querySelectorAll('[role="tab"][aria-controls]'));
+      if (tabs.length === 0) continue;
+
+      const container = tablist.closest('[data-orientation="horizontal"]') || tablist.parentElement;
+      if (!container) continue;
+
+      const panels = new Map();
+      for (const tab of tabs) {
+        const id = tab.getAttribute("aria-controls");
+        if (!id) continue;
+        const panel = container.querySelector(`#${CSS.escape(id)}`);
+        if (panel) panels.set(id, panel);
+      }
+
+      // Special-case: pest-control "Browse by category" tabs have only the "all" panel populated.
+      const labels = tabs.map((t) => (t.textContent || "").trim().toLowerCase());
+      const looksLikePestCategoryTabs =
+        labels.includes("all") &&
+        labels.includes("insects") &&
+        labels.includes("rodents") &&
+        (labels.includes("wood-destroying") || labels.includes("wood destroying"));
+
+      const allPanelId = tabs.find((t) => (t.textContent || "").trim().toLowerCase() === "all")?.getAttribute("aria-controls");
+      const allPanel = allPanelId ? panels.get(allPanelId) : null;
+      const otherPanelsEmpty =
+        looksLikePestCategoryTabs &&
+        allPanel &&
+        tabs
+          .map((t) => t.getAttribute("aria-controls"))
+          .filter((id) => id && id !== allPanelId)
+          .every((id) => (panels.get(id)?.textContent || "").trim().length === 0);
+
+      function setActive(tab) {
+        const activeId = tab.getAttribute("aria-controls");
+        for (const t of tabs) {
+          const isActive = t === tab;
+          t.setAttribute("aria-selected", isActive ? "true" : "false");
+          t.setAttribute("data-state", isActive ? "active" : "inactive");
+          t.tabIndex = isActive ? 0 : -1;
+        }
+
+        if (otherPanelsEmpty && allPanelId && allPanel) {
+          // Keep only the "all" panel shown and filter cards within it.
+          for (const [id, panel] of panels.entries()) {
+            const show = id === allPanelId;
+            panel.hidden = !show;
+            panel.setAttribute("data-state", show ? "active" : "inactive");
+          }
+
+          const tabLabel = (tab.textContent || "").trim().toLowerCase();
+          const filter =
+            tabLabel === "all"
+              ? null
+              : tabLabel === "wood-destroying" || tabLabel === "wood destroying"
+                ? "wood-destroying"
+                : tabLabel;
+
+          const cards = Array.from(allPanel.querySelectorAll(".rounded-lg.border.bg-card"));
+          for (const card of cards) {
+            const badge = card.querySelector(".inline-flex.items-center.rounded-full");
+            const category = (badge?.textContent || "").trim().toLowerCase();
+            const normalized =
+              category === "wood-destroying" || category === "wood destroying" ? "wood-destroying" : category;
+            card.style.display = !filter || normalized === filter ? "" : "none";
+          }
+          return;
+        }
+
+        // Default: show/hide actual panels.
+        for (const [id, panel] of panels.entries()) {
+          const show = id === activeId;
+          panel.hidden = !show;
+          panel.setAttribute("data-state", show ? "active" : "inactive");
+        }
+      }
+
+      tablist.addEventListener("click", (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const tab = target.closest('[role="tab"][aria-controls]');
+        if (!tab || !tablist.contains(tab)) return;
+        e.preventDefault();
+        setActive(tab);
+      });
+
+      // Initialize
+      const initial = tabs.find((t) => t.getAttribute("aria-selected") === "true") || tabs[0];
+      setActive(initial);
+    }
+  }
+
+  function initContactForm() {
+    const contactSection = document.querySelector("#contact");
+    if (!contactSection) return;
+
+    // Replace Radix-style combobox with a visible native select.
+    const combobox = contactSection.querySelector('button[role="combobox"][aria-controls]');
+    if (combobox) {
+      const wrapper = combobox.parentElement;
+      const hiddenSelect = wrapper?.querySelector('select[aria-hidden="true"]');
+
+      const select = document.createElement("select");
+      select.name = "service";
+      select.className =
+        "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2";
+
+      const options = [
+        { value: "", label: "Select a service" },
+        { value: "general", label: "General Question" },
+        { value: "pest-control", label: "Pest Control" },
+        { value: "wildlife-removal", label: "Wildlife Removal" },
+        { value: "inspection", label: "Inspection" },
+        { value: "other", label: "Other" },
+      ];
+      for (const o of options) {
+        const opt = document.createElement("option");
+        opt.value = o.value;
+        opt.textContent = o.label;
+        select.appendChild(opt);
+      }
+
+      hiddenSelect?.setAttribute("disabled", "true");
+      hiddenSelect?.setAttribute("hidden", "true");
+      combobox.setAttribute("hidden", "true");
+
+      wrapper?.appendChild(select);
+    }
+
+    // Static fallback for form submit: open mailto with the message.
+    const form = contactSection.querySelector("form");
+    if (!form) return;
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const get = (name) => (form.querySelector(`[name="${CSS.escape(name)}"]`)?.value || "").trim();
+      const name = get("name");
+      const phone = get("phone");
+      const email = get("email");
+      const message = get("message");
+      const service = get("service");
+
+      const mailToLink =
+        document.querySelector('a[href^="mailto:"]')?.getAttribute("href") || "mailto:hello@greenshield.local";
+
+      const subject = encodeURIComponent("Website request");
+      const body = encodeURIComponent(
+        `Name: ${name}\nPhone: ${phone}\nEmail: ${email}\nService: ${service}\n\nMessage:\n${message}\n`,
+      );
+
+      const href = `${mailToLink}?subject=${subject}&body=${body}`;
+      window.location.href = href;
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.textContent = "Opening email…";
+        submitBtn.setAttribute("disabled", "true");
+      }
+    });
+  }
+
   onReady(() => {
     initMobileMenu();
     initReviews();
     initFaq();
+    initRadixTabs();
+    initContactForm();
   });
 })();
-

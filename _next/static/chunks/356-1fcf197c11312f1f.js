@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 (self.webpackChunk_N_E = self.webpackChunk_N_E || []).push([
   [356],
   {
@@ -28,7 +28,7 @@
         n = {
           deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
           imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-          path: "/dist-20260121-142648/_next/image",
+          path: "/_next/image",
           loader: "default",
           loaderFile: "",
           domains: [],
@@ -75,7 +75,7 @@
           i +
           "&q=" +
           l +
-          (n.startsWith("/dist-20260121-142648/_next/static/media/"), "")
+          (n.startsWith("/_next/static/media/"), "")
         );
       }
       Object.defineProperty(t, "__esModule", { value: !0 }),
@@ -162,7 +162,7 @@
         g = {
           deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
           imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-          path: "/dist-20260121-142648/_next/image/",
+          path: "/_next/image/",
           loader: "default",
           dangerouslyAllowSVG: !1,
           unoptimized: !0,

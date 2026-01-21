@@ -1,4 +1,4 @@
-﻿(self.webpackChunk_N_E = self.webpackChunk_N_E || []).push([
+(self.webpackChunk_N_E = self.webpackChunk_N_E || []).push([
   [792],
   {
     159: (e, t, r) => {
@@ -422,7 +422,7 @@
                 configurable: !0,
               }),
             );
-          let a = r[t].map((t) => e + "/dist-20260121-142648/_next/" + (0, i.encodeURIPath)(t));
+          let a = r[t].map((t) => e + "/_next/" + (0, i.encodeURIPath)(t));
           return {
             scripts: a
               .filter((e) => e.endsWith(".js"))
@@ -1316,7 +1316,7 @@
           (e.buildId || !e.trailingSlash) && (t = (0, n.removeTrailingSlash)(t)),
           e.buildId &&
             (t = (0, o.addPathSuffix)(
-              (0, a.addPathPrefix)(t, "/dist-20260121-142648/_next/data/" + e.buildId),
+              (0, a.addPathPrefix)(t, "/_next/data/" + e.buildId),
               "/" === e.pathname ? "index.json" : ".json",
             )),
           (t = (0, a.addPathPrefix)(t, e.basePath)),
@@ -1389,7 +1389,7 @@
               ? (0, o.interpolateAs)(f, h, d).result
               : _;
           let g = (0, i.default)((0, c.removeTrailingSlash)((0, u.addLocale)(m, n)), ".json");
-          return (0, a.addBasePath)("/dist-20260121-142648/_next/data/" + this.buildId + g + p, !0);
+          return (0, a.addBasePath)("/_next/data/" + this.buildId + g + p, !0);
         }
         _isSsg(e) {
           return this.promisedSsgManifest.then((t) => t.has(e));
@@ -1679,7 +1679,7 @@
         n = {
           deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
           imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-          path: "/dist-20260121-142648/_next/image",
+          path: "/_next/image",
           loader: "default",
           loaderFile: "",
           domains: [],
@@ -3551,11 +3551,11 @@
               i = !1;
             if (
               (r.startsWith("[") && r.endsWith("]") && ((r = r.slice(1, -1)), (i = !0)),
-              r.startsWith("вЂ¦"))
+              r.startsWith("…"))
             )
               throw Object.defineProperty(
                 Error(
-                  "Detected a three-dot character ('вЂ¦') at ('" + r + "'). Did you mean ('...')?",
+                  "Detected a three-dot character ('…') at ('" + r + "'). Did you mean ('...')?",
                 ),
                 "__NEXT_ERROR_CODE",
                 { value: "E147", enumerable: !1, configurable: !0 },
@@ -4202,7 +4202,7 @@
           (h = a.defaultLocale);
         let t = a.assetPrefix || "";
         if (
-          (self.__next_set_public_path__("" + t + "/dist-20260121-142648/_next/"),
+          (self.__next_set_public_path__("" + t + "/_next/"),
           (0, S.setConfig)({ serverRuntimeConfig: {}, publicRuntimeConfig: a.runtimeConfig || {} }),
           (o = (0, T.getURL)()),
           (0, L.hasBasePath)(o) && (o = (0, M.removeBasePath)(o)),
@@ -4251,7 +4251,7 @@
                         value: {
                           deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
                           imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-                          path: "/dist-20260121-142648/_next/image/",
+                          path: "/_next/image/",
                           loader: "default",
                           dangerouslyAllowSVG: !1,
                           unoptimized: !0,
@@ -4758,7 +4758,7 @@
           (0, o.pathHasPrefix)(c.pathname, u) &&
           ((c.pathname = (0, a.removePathPrefix)(c.pathname, u)), (c.basePath = u));
         let f = c.pathname;
-        if (c.pathname.startsWith("/dist-20260121-142648/_next/data/") && c.pathname.endsWith(".json")) {
+        if (c.pathname.startsWith("/_next/data/") && c.pathname.endsWith(".json")) {
           let e = c.pathname
             .replace(/^\/_next\/data\//, "")
             .replace(/\.json$/, "")
